@@ -7,3 +7,6 @@ dist
 bin
 lib
 pyvenv.cfg
+
+.coverage
+coverage.xml
