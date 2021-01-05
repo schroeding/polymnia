@@ -23,7 +23,7 @@ def writeData(type: str, name: str, data: bytes, extension: str = '', uniqueCopy
             log.error(f'Could not create the specified data type folder \'{_typePath}\', aborting')
             return False
 
-    _fileName = f'{name}_{hashlib.sha1(data).hexdigest() if uniqueCopy else str()}'
+    _fileName = f'{name}_{hashlib.sha256(data).hexdigest() if uniqueCopy else str()}'
     if (extension != str()):
         _fileName += f'.{extension}'
     _filePath = os.path.abspath(os.path.join(_typePath, _fileName))
