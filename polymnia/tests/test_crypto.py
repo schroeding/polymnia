@@ -1,5 +1,6 @@
 import unittest
-import polymnia
+import polymnia.core.io
+import polymnia.core.tls
 import cryptography
 
 

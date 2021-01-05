@@ -38,11 +38,7 @@ def dumpKey(name: str) -> bool:
             encoding=serialization.Encoding.PEM,
             format=serialization.PrivateFormat.TraditionalOpenSSL,
             encryption_algorithm=serialization.NoEncryption())
-        _keydata += '\n'
-        _keydata = _key.public_bytes(
-            encoding=serialization.Encoding.PEM,
-            format=serialization.PublicFormat.SubjectPublicKeyInfo)
-        io.writeData('privatekeys', name, _keydata.encode('utf-8'), 'pem')
+        io.writeData('privatekeys', name, _keydata, 'pem')
         return True
     else:
         log.error(f'Cannot dump key in unknown format \'{name}\'')
