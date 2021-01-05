@@ -40,3 +40,21 @@ def writeData(type: str, name: str, data: bytes, extension: str = '', uniqueCopy
         return False
 
     return True
+
+
+def readData(path: str) -> bytes:
+    _filePath = os.path.abspath(path)
+    if (not os.path.exists(_filePath)):
+        log.warning(f'Could not read data from non-existing file \'{_filePath}\'')
+        return None
+
+    _data = None
+    try:
+        _fileHandle = open(_filePath, 'rb')
+        _data = _fileHandle.read(None)
+        _fileHandle.close()
+    except (Exception):
+        log.error(f'Could not read data from file \'{_filePath}\'')
+        return None
+
+    return _data
