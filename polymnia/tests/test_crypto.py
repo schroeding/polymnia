@@ -13,9 +13,18 @@ class TestCrypto(unittest.TestCase):
             'zu seinem sonstigen Umfang kläglich dünnen Beine flimmerten ihm hilflos vor den Augen.'
 
     def testIO(self):
+        self.assertFalse(polymnia.core.io.writeData('tests/../../../data', 'file1', self.testStr.encode('utf-8'), 'txt'))
         self.assertTrue(polymnia.core.io.writeData('tests/data', 'file1', self.testStr.encode('utf-8'), 'txt'))
         self.assertEqual(polymnia.core.io.readData('tests/data/file1_300b3ab9a493a9e24594ec5558bdc5a25cadfec7918301183bee0fd14e79b6ab.txt'), self.testStr.encode('utf-8'))
         
+        self.assertFalse(polymnia.core.tls.generateRSAKey('test', 256))
+        self.assertTrue(polymnia.core.tls.generateRSAKey('test', 512))
         self.assertTrue(polymnia.core.tls.generateRSAKey('test', 1024))
+        self.assertTrue(polymnia.core.tls.generateRSAKey('test', 2048))
+        self.assertTrue(polymnia.core.tls.generateRSAKey('test', 4096))
         self.assertIsInstance(polymnia.core.tls.getRSAKey('test'), cryptography.hazmat.primitives.asymmetric.rsa.RSAPrivateKeyWithSerialization)
         self.assertTrue(polymnia.core.tls.dumpKey('test'))
+
+        self.assertTrue(polymnia.core.tls.generateCaCertificate('test', 'test ca'))
+        self.assertIsInstance(polymnia.core.tls.getCACertificate('test'), cryptography.x509.Certificate)
+        self.assertTrue(polymnia.core.tls.dumpCaCertificate('test'))
