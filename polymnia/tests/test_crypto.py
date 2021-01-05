@@ -1,5 +1,6 @@
 import unittest
 import polymnia
+import cryptography
 
 
 class TestCrypto(unittest.TestCase):
@@ -11,5 +12,9 @@ class TestCrypto(unittest.TestCase):
             'zu seinem sonstigen Umfang kläglich dünnen Beine flimmerten ihm hilflos vor den Augen.'
 
     def testIO(self):
-        self.assertEqual(polymnia.core.io.writeData('tests/data', 'file1', self.testStr.encode('utf-8'), 'txt'), True)
+        self.assertTrue(polymnia.core.io.writeData('tests/data', 'file1', self.testStr.encode('utf-8'), 'txt'))
         self.assertEqual(polymnia.core.io.readData('tests/data/file1_044435a5149851f4fcb2f6ad5628a27f9ef9c3e8.txt'), self.testStr.encode('utf-8'))
+        
+        self.assertTrue(polymnia.core.tls.generateRSAKey('test', 1024))
+        self.assertIsInstance(polymnia.core.tls.getRSAKey('test'), cryptography.hazmat.primitives.asymmetric.rsa.RSAPrivateKeyWithSerialization)
+        self.assertTrue(polymnia.core.tls.dumpKey('test'))

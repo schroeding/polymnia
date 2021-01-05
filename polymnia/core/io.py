@@ -26,7 +26,12 @@ def writeData(type: str, name: str, data: bytes, extension: str = '', uniqueCopy
     _fileName = f'{name}_{hashlib.sha1(data).hexdigest() if uniqueCopy else str()}'
     if (extension != str()):
         _fileName += f'.{extension}'
-    _filePath = os.path.join(_typePath, _fileName)
+    _filePath = os.path.abspath(os.path.join(_typePath, _fileName))
+    
+    if (os.path.commonpath([_filePath, _dataPath]) != _dataPath):
+        log.critical(f'Tried to write data outside of data folder! (\'{_filePath}\')')
+        log.critical('Possibly malicious behavior, aborting')
+        return False
 
     if (os.path.exists(_filePath)):
         log.info(f'Overwriting existing file \'{_fileName}\'')
@@ -43,10 +48,16 @@ def writeData(type: str, name: str, data: bytes, extension: str = '', uniqueCopy
 
 
 def readData(path: str) -> bytes:
+    _dataPath = os.path.abspath('./')
     _filePath = os.path.abspath(path)
     if (not os.path.exists(_filePath)):
         log.warning(f'Could not read data from non-existing file \'{_filePath}\'')
         return None
+
+    if (os.path.commonpath([_filePath, _dataPath]) != _dataPath):
+        log.critical(f'Tried to read data outside of data folder! (\'{_filePath}\')')
+        log.critical('Possibly malicious behavior, aborting')
+        return False
 
     _data = None
     try:
