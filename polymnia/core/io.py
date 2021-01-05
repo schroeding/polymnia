@@ -57,7 +57,7 @@ def readData(path: str) -> bytes:
     if (os.path.commonpath([_filePath, _dataPath]) != _dataPath):
         log.critical(f'Tried to read data outside of data folder! (\'{_filePath}\')')
         log.critical('Possibly malicious behavior, aborting')
-        return False
+        return None
 
     _data = None
     try:

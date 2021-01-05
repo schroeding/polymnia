@@ -14,7 +14,11 @@ class TestCrypto(unittest.TestCase):
 
     def testIO(self):
         self.assertFalse(polymnia.core.io.writeData('tests/../../../data', 'file1', self.testStr.encode('utf-8'), 'txt'))
+        self.assertFalse(polymnia.core.io.writeData('\0', '\0', self.testStr.encode('utf-8'), '\0'))
+        self.assertFalse(polymnia.core.io.writeData('tests/data', '\0', self.testStr.encode('utf-8'), '\0'))
         self.assertTrue(polymnia.core.io.writeData('tests/data', 'file1', self.testStr.encode('utf-8'), 'txt'))
+        self.assertIsNone(polymnia.core.io.readData('invalidinvalidinvalidinvalidinvalid'))
+        self.assertIsNone(polymnia.core.io.readData('tests/../../../data/file1'))
         self.assertEqual(polymnia.core.io.readData('tests/data/file1_300b3ab9a493a9e24594ec5558bdc5a25cadfec7918301183bee0fd14e79b6ab.txt'), self.testStr.encode('utf-8'))
         
         self.assertFalse(polymnia.core.tls.generateRSAKey('test', 256))
