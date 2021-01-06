@@ -1,11 +1,12 @@
 import polymnia.core.log as log
+import polymnia.core.config as config
 
 import os
 import hashlib
 
 
 def writeData(type: str, name: str, data: bytes, extension: str = '', uniqueCopy: bool = True) -> bool:
-    _dataPath = os.path.abspath('./')
+    _dataPath = os.path.abspath(config.get('dataPath'))
     if (not os.path.exists(_dataPath)):
         log.warning(f'The specified data folder \'{_dataPath}\' does not exist and will be created')
         try:
@@ -27,7 +28,7 @@ def writeData(type: str, name: str, data: bytes, extension: str = '', uniqueCopy
     if (extension != str()):
         _fileName += f'.{extension}'
     _filePath = os.path.abspath(os.path.join(_typePath, _fileName))
-    
+
     if (os.path.commonpath([_filePath, _dataPath]) != _dataPath):
         log.critical(f'Tried to write data outside of data folder! (\'{_filePath}\')')
         log.critical('Possibly malicious behavior, aborting')
@@ -47,14 +48,14 @@ def writeData(type: str, name: str, data: bytes, extension: str = '', uniqueCopy
     return True
 
 
-def readData(path: str) -> bytes:
-    _dataPath = os.path.abspath('./')
+def readData(path: str, overrideDataPathEscapeProtection: bool = False) -> bytes:
+    _dataPath = os.path.abspath(config.get('dataPath'))
     _filePath = os.path.abspath(path)
     if (not os.path.exists(_filePath)):
         log.warning(f'Could not read data from non-existing file \'{_filePath}\'')
         return None
 
-    if (os.path.commonpath([_filePath, _dataPath]) != _dataPath):
+    if ((os.path.commonpath([_filePath, _dataPath]) != _dataPath) and not overrideDataPathEscapeProtection):
         log.critical(f'Tried to read data outside of data folder! (\'{_filePath}\')')
         log.critical('Possibly malicious behavior, aborting')
         return None
