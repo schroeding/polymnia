@@ -69,7 +69,7 @@ def generateCaCertificate(name: str, caName: str) -> bool:
 
 
 def cloneCaCertificate(name: str, originalCert: bytes) -> bool:
-    #try:
+    # try:
     _origCaCert = x509.load_pem_x509_certificate(originalCert)
     if (not _origCaCert.extensions.get_extension_for_oid(x509.OID_BASIC_CONSTRAINTS).value.ca):
         log.error(f'Cannot clone ca certificate \'{name}\' from given non-ca certificate')
@@ -92,7 +92,7 @@ def cloneCaCertificate(name: str, originalCert: bytes) -> bool:
         log.warning(f'Overwriting existing CA certificate \'{name}\' in memory')
     _caCerts[name] = _caCertificate
     return True
-   # except (Exception):
+    # except (Exception):
     #    log.error(f'Could not clone ca certificate \'{name}\' from invalid certificate')
     #    return False
 
