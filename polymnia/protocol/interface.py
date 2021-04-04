@@ -1,4 +1,4 @@
-import polymnia.protocol.ethernet as ethernet
+from .ethernet import RawPacket
 
 from abc import ABC, abstractmethod
 import os
@@ -32,7 +32,7 @@ class Layer2(ABC):
         print(self.destinations)
 
 
-    def receiveData(self, packet: ethernet.RawPacket) -> None:
+    def receiveData(self, packet: RawPacket) -> None:
         self.readQueue.put((self._currentFrame, packet))
         self._currentFrame += 1
         self.dataAvailable()
