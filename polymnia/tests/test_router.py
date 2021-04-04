@@ -1,4 +1,5 @@
 import unittest
+import polymnia
 import polymnia.core.router
 import polymnia.protocol
 import polymnia.protocol.layer2
