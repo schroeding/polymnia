@@ -2,10 +2,6 @@ import unittest
 import polymnia.core.io
 import polymnia.core.tls
 import cryptography
-import polymnia.core.router
-import polymnia.protocol
-import polymnia.protocol.layer2
-
 
 class TestCrypto(unittest.TestCase):
 
