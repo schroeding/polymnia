@@ -15,8 +15,45 @@ _routerIPv4 = '10.101.10.10'
 
 _virtualNetworkTable = dict()
 
+_ipv4Table = dict()
+
+_routerIPv4HopsToInternet = [ '13.13.13.1', '13.13.13.5' ]
+
 _hooks = dict()
 _frameNumber = 0
+
+# Temporary, this class should be moved somewhere else
+class NetworkHost:
+    name = ''
+    ipv4 = None
+    ipv4Hops = None
+    ipv6 = None
+    ipv6Hops = None
+    mac = None
+
+    def __init__(self, ipv4, ipv4Hops, ipv6, ipv6Hops, mac):
+        self.ipv4 = ipv4
+        self.ipv4Hops = ipv4Hops
+        self.ipv6 = ipv6
+        self.ipv6Hops = ipv6Hops
+# End of temporary class
+# TODO: transfer to diffrent file
+
+def addNetworkHost(name: str, ipv4: Optional[str] = None, ipv4Hops: Optional[list] = None, ipv6: Optional[str] = None, ipv6Hops: Optional[str] = None, mac: Optional[str] = None) -> None:
+    if (_virtualNetworkTable.get(name, None) != None):
+        log.info(f'Overwriting virtual network host \'{name}\'')
+    _virtualNetworkTable[name] = NetworkHost(ipv4, ipv4Hops, ipv6, ipv6Hops, mac)
+    if (ipv4 != None):
+        _ipv4Table[ipv4] = name
+
+
+def getIPv4NetworkHops(name: str) -> list:
+    _host = _virtualNetworkTable.get(name, None)
+    print(_host)
+    if ((_host != None) and (_host.ipv4Hops != None)):
+        return [*_routerIPv4HopsToInternet, *(_host.ipv4Hops)]
+    return _routerIPv4HopsToInternet 
+    
 
 def createEthernetDevice(name: str) -> Optional[pytun.TunTapDevice]:
     _ethernetDevice = None

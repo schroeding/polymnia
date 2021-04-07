@@ -61,8 +61,9 @@ class Layer4(ABC):
 
     LISTENER = 1
     CLIENT = 2
+    
+    _layer2 = None
 
-    _socket = None
     
     _layer5Hooks = dict() # Layer 5 hooks of the connection, e.g. TLS / SSL
     _layer7Hooks = dict() # Layer 7 hooks of the connection, e.g. HTTP / FTP

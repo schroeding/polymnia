@@ -24,9 +24,9 @@ class TestRouter(unittest.TestCase):
         arp.addDestination('ff:ff:ff:ff:ff:ff')
         ip = polymnia.protocol.layer2.IP()
         ip.addDestination('1e:00:00:00:14:12')
-        icmp = polymnia.protocol.layer2.ICMP()
-        icmp.addDestination('1e:00:00:00:14:12')
         polymnia.core.router.registerService(arp)
+        polymnia.core.router.addNetworkHost('host1.eli.rumia.org', '7.7.7.7', ['16.1.2.1', '', '5.5.1.1'])
+        polymnia.core.router._routerIPv4HopsToInternet.append('2.2.2.2')
         polymnia.core.router.registerService(ip)
         polymnia.core.router.loop(tun)
         
